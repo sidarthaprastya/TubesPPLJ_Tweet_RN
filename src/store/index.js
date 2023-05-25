@@ -2,7 +2,17 @@ const {atom} = require('recoil');
 
 const Api = atom({
   key: 'api-url',
-  default: 'http://192.168.100.6:8080',
+  default: 'http://192.168.43.18:8080',
 });
 
-export {Api};
+const Uname = atom({
+  key: 'username',
+  default: '',
+});
+
+const Stay = atom({
+  key: 'stay-signed',
+  default: false,
+});
+
+export {Api, Uname, Stay};

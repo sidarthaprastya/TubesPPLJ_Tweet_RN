@@ -57,4 +57,30 @@ const DialogPop = ({visible, hideDialog, title, text}) => {
   );
 };
 
-export {DialogSuccessRegister, DialogFailRegister, DialogPop};
+const DialogConfirmation = ({visible, onDeny, onConfirm, title, text}) => {
+  return (
+    <Portal>
+      <Dialog visible={visible} onDismiss={onDeny}>
+        <Dialog.Title> {title}</Dialog.Title>
+        <Dialog.Content>
+          <Text style={{margin: 10}}>{text}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+            }}>
+            <Button onPress={onDeny}>No</Button>
+            <Button onPress={onConfirm}>Yes</Button>
+          </View>
+        </Dialog.Content>
+      </Dialog>
+    </Portal>
+  );
+};
+
+export {
+  DialogSuccessRegister,
+  DialogFailRegister,
+  DialogPop,
+  DialogConfirmation,
+};

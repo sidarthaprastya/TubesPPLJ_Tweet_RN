@@ -22,9 +22,10 @@ const App = () => {
             screenOptions={{
               headerShown: false,
             }}>
+            <Stack.Screen name="MainLayout" component={MainLayout} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
-            <Stack.Screen name="MainLayout" component={MainLayout} />
+
             {/* <Stack.Screen name="NestedScreen" component={NestedScreen} /> */}
           </Stack.Navigator>
         </NavigationContainer>

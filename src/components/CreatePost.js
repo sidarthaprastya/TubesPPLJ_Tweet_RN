@@ -63,12 +63,12 @@ const CreatePost = ({callbackAction}) => {
             justifyContent: 'space-evenly',
           }}>
           <Button
-            icon="trash-can"
+            icon="cancel"
             mode="contained"
             onPress={() => {
               setMessage('');
             }}>
-            Delete
+            Reset
           </Button>
           <Button icon="pen" mode="contained" onPress={onSubmit}>
             Post

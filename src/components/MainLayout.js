@@ -12,12 +12,14 @@ import MyPostScreen from '../screens/MyPostScreen';
 import moment from 'moment';
 import axios from 'axios';
 import {useRecoilState} from 'recoil';
-import {Api} from '../store';
+import {Api, Uname} from '../store';
+import CookieManager from '@react-native-cookies/cookies';
 
 const Tab = createBottomTabNavigator();
 
 const MainLayout = ({route, navigation}) => {
-  const {username} = route.params;
+  // const {userLogin} = route.params;
+  const [username, setUsername] = useRecoilState(Uname);
   const [Url, setUrl] = useRecoilState(Api);
 
   const [UserProfile, setUserProfile] = useState({
@@ -28,13 +30,24 @@ const MainLayout = ({route, navigation}) => {
     date_of_birth: moment().format('YYYY-MM-DD'),
   });
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getUserProfile();
+      // getMyReply();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   const getUserProfile = async () => {
     axios
-      .get(`${Url}/api/users/${username}`)
+      .get(`${Url}/api/users/mine`)
       .then(response => {
-        setUserProfile(response.data.user);
+        setUserProfile(response.data);
+        console.log('Get user profile');
+
         // console.log(response.data);
       })
+
       .catch(error => {
         console.error(error.message);
       });
@@ -44,16 +57,21 @@ const MainLayout = ({route, navigation}) => {
     navigation.navigate('Login');
   };
 
+  // useEffect(() => {
+  //   // setUsername(UserProfile.uname);
+  //   getUserProfile();
+  // }, []);
+
   useEffect(() => {
-    getUserProfile();
-  }, []);
+    setUsername(UserProfile.uname);
+  }, [UserProfile]);
 
   return (
     <View style={{flex: 1}}>
       <Profile
         setLogOut={LoggedOut}
         name={UserProfile.fname + ' ' + UserProfile.lname}
-        username={username}
+        username={UserProfile.uname}
       />
 
       <Tab.Navigator
