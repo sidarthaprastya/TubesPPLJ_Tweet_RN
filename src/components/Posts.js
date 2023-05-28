@@ -82,10 +82,13 @@ const Posts = ({
   };
 
   const getUserInfo = async () => {
+    // console.log('msg: ', message);
+    // console.log(username);
     axios
       .get(`${Url}/api/users/${username}`)
       .then(response => {
         setUser(response.data.user);
+        // console.log(response.data.user);
       })
       .catch(error => {
         console.error(error.message);
@@ -130,6 +133,20 @@ const Posts = ({
     getReplyInfo();
     getUserInfo();
   }, [CommentView, HideComment]);
+
+  useEffect(() => {
+    getReplyInfo();
+    getUserInfo();
+  }, []);
+
+  useEffect(() => {
+    console.log('Profile reply');
+  }, [User]);
+
+  // useEffect(() => {
+  //   getReplyInfo();
+  //   // getUserInfo();
+  // }, [User]);
 
   return (
     <Card

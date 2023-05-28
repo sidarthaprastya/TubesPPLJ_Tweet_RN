@@ -1,4 +1,4 @@
-import {View, ScrollView} from 'react-native';
+import {View, ScrollView, RefreshControl} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Posts from '../components/Posts';
 import {useRecoilState} from 'recoil';
@@ -12,6 +12,16 @@ const MyPostScreen = ({navigation}) => {
   const [Url, setUrl] = useRecoilState(Api);
   const [PostArray, setPostArray] = useState([]);
   const [Username, setUsername] = useRecoilState(Uname);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getMyPosts();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   function onlyUnique(value, index, array) {
     return array.indexOf(value) === index;
@@ -38,7 +48,7 @@ const MyPostScreen = ({navigation}) => {
       for (var i = 0; i < unique.length; i++) {
         axios.get(`${Url}/api/posts/${unique[i]}`).then(resp1 => {
           if (resp1.data.message[0].uname != Username) {
-            // console.log(resp1.data);
+            console.log(resp1.data.message[0]);
             setPostArray(PostArray => [...PostArray, resp1.data.message[0]]);
           }
         });
@@ -66,13 +76,16 @@ const MyPostScreen = ({navigation}) => {
     setPostArray(PostArray.filter(obj => obj.mid !== mid));
   };
 
-  useEffect(() => {
-    getMyPosts();
-    // getMyReply();
-  }, []);
+  // useEffect(() => {
+  //   console.log("Profile reply")
+  //   // getMyReply();
+  // }, [PostArr]);
 
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View style={{padding: 20}}>
         {PostArray.length == 0 ? (
           <Card
@@ -114,6 +127,8 @@ const MyPostScreen = ({navigation}) => {
                     message={post.messages}
                     date={moment(post.created_at).format(`DD MMM YYYY`)}
                     time={moment(post.created_at).format(`hh:mm a`)}
+                    // date="A"
+                    // time="A"
                     deleteAction={deleteCallback}
                     editCallback={getMyPosts}
                   />

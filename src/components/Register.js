@@ -69,6 +69,7 @@ const Register = ({navigation}) => {
   };
   const hideSuccessDialog = () => {
     setSuccessDialog(false);
+    navigation.navigate('Login');
   };
 
   useEffect(() => {
