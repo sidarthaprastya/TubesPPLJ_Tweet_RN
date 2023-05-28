@@ -4,11 +4,7 @@
 
 ## Getting Started
 
-- Instalasi Server (silakan clone dari link ini)
-
-```
-https://github.com/vinlred/server-express
-```
+- Instalasi Server (https://github.com/vinlred/server-express)
 
 - Clone repositori ini
 
